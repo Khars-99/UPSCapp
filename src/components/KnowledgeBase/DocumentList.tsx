@@ -22,7 +22,6 @@ import {
   Description,
   Delete,
   Visibility,
-  Edit,
   PictureAsPdf,
   MenuBook,
 } from '@mui/icons-material';

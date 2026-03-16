@@ -62,20 +62,21 @@ export const CurrentAffairs: React.FC = () => {
     setMessage(null);
 
     try {
-      // Note: In a real implementation, you would use pdf-parse here
-      // For demo purposes, we'll simulate PDF text extraction
+      // Note: In a real implementation, you would use a robust library like pdfjs-dist
+      // For now, we use FileReader to read as text which works for text-based files
       const reader = new FileReader();
       reader.onload = (e) => {
-        const text = `Extracted text from ${file.name}:\n\nThis is a simulated PDF text extraction. In a real implementation, this would contain the actual extracted text from the PDF file. The text would include current affairs content that can be tagged and processed for UPSC preparation.\n\nKey Points:\n- Important policy updates\n- Economic developments\n- International relations\n- Environmental issues\n- Government schemes\n\nThis extracted content can then be tagged with relevant syllabus categories and used to generate practice questions.`;
+        const content = e.target?.result as string;
+        const text = `Extracted content from ${file.name}:\n\n${content.substring(0, 5000)}`;
         
         setPdfText(text);
         setTitle(file.name.replace('.pdf', ''));
         setProcessing(false);
-        setMessage({ type: 'success', text: 'PDF text extracted successfully!' });
+        setMessage({ type: 'success', text: 'PDF content extracted successfully!' });
       };
       
-      reader.readAsText(file); // In real implementation, use pdf-parse
-    } catch (error) {
+      reader.readAsText(file);
+    } catch {
       setProcessing(false);
       setMessage({ type: 'error', text: 'Error processing PDF. Please try again.' });
     }
@@ -126,7 +127,7 @@ export const CurrentAffairs: React.FC = () => {
       setSelectedTags([]);
       setQuestions(['']);
       setMessage({ type: 'success', text: 'Current affairs item saved successfully!' });
-    } catch (error) {
+    } catch {
       setMessage({ type: 'error', text: 'Error saving item. Please try again.' });
     }
   };

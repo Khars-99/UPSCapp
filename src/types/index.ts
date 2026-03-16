@@ -30,7 +30,7 @@ export interface TestSession {
   id: string;
   type: 'mcq' | 'essay';
   questions: string[];
-  answers: Record<string, any>;
+  answers: Record<string, string | number | Record<string, unknown>>;
   startTime: Date;
   endTime?: Date;
   score?: number;

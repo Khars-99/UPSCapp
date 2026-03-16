@@ -60,24 +60,7 @@ export const FileUpload: React.FC<FileUploadProps> = ({ onUploadComplete }) => {
     }
   }, []);
 
-  const handleDrop = useCallback((e: React.DragEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setDragActive(false);
-    
-    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-      handleFiles(e.dataTransfer.files);
-    }
-  }, []);
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    e.preventDefault();
-    if (e.target.files && e.target.files[0]) {
-      handleFiles(e.target.files);
-    }
-  };
-
-  const handleFiles = async (files: FileList) => {
+  const handleFiles = useCallback(async (files: FileList) => {
     const file = files[0];
     
     // Validate file type
@@ -112,9 +95,9 @@ export const FileUpload: React.FC<FileUploadProps> = ({ onUploadComplete }) => {
 
       // Read file content (simplified for demo)
       const reader = new FileReader();
-      reader.onload = async (e) => {
+      reader.onload = async (ev) => {
         try {
-          const content = e.target?.result as string;
+          const content = ev.target?.result as string;
           
           const document: Document = {
             id: uuidv4(),
@@ -138,7 +121,7 @@ export const FileUpload: React.FC<FileUploadProps> = ({ onUploadComplete }) => {
             setUploadProgress(0);
             setMessage(null);
           }, 2000);
-        } catch (error) {
+        } catch {
           setMessage({ type: 'error', text: 'Error processing file. Please try again.' });
           setUploading(false);
           setUploadProgress(0);
@@ -146,10 +129,27 @@ export const FileUpload: React.FC<FileUploadProps> = ({ onUploadComplete }) => {
       };
 
       reader.readAsText(file);
-    } catch (error) {
+    } catch {
       setMessage({ type: 'error', text: 'Error uploading file. Please try again.' });
       setUploading(false);
       setUploadProgress(0);
+    }
+  }, [onUploadComplete, selectedTags]);
+
+  const handleDrop = useCallback((e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setDragActive(false);
+
+    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+      handleFiles(e.dataTransfer.files);
+    }
+  }, [handleFiles]);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    if (e.target.files && e.target.files[0]) {
+      handleFiles(e.target.files);
     }
   };
 
