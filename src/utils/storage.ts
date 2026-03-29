@@ -72,11 +72,11 @@ export const storage = {
   },
 
   // Settings
-  async saveSetting(key: string, value: any): Promise<void> {
+  async saveSetting<T>(key: string, value: T): Promise<void> {
     await localforage.setItem(`setting_${key}`, value);
   },
 
-  async getSetting(key: string): Promise<any> {
-    return await localforage.getItem(`setting_${key}`);
+  async getSetting<T>(key: string): Promise<T | null> {
+    return await localforage.getItem<T>(`setting_${key}`);
   }
 };

@@ -8,7 +8,6 @@ import {
   ListItemText,
   Toolbar,
   Typography,
-  IconButton,
   Box,
   Divider,
 } from '@mui/material';

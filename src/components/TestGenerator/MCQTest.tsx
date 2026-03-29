@@ -31,7 +31,16 @@ export const MCQTest: React.FC = () => {
   const [timeRemaining, setTimeRemaining] = useState(30 * 60); // 30 minutes
   const [isPaused, setIsPaused] = useState(false);
   const [showResults, setShowResults] = useState(false);
-  const [testResults, setTestResults] = useState<{ score: number; details: any[] }>({ score: 0, details: [] });
+  const [testResults, setTestResults] = useState<{
+    score: number;
+    details: Array<{
+      question: string;
+      userAnswer: string;
+      correctAnswer: string;
+      isCorrect: boolean;
+      explanation: string;
+    }>
+  }>({ score: 0, details: [] });
 
   useEffect(() => {
     loadQuestions();
@@ -51,7 +60,7 @@ export const MCQTest: React.FC = () => {
     return () => {
       if (interval) clearInterval(interval);
     };
-  }, [isTestActive, isPaused, timeRemaining]);
+  }, [isTestActive, isPaused, timeRemaining, finishTest]);
 
   const loadQuestions = async () => {
     try {
@@ -116,7 +125,7 @@ export const MCQTest: React.FC = () => {
     }
   };
 
-  const finishTest = async () => {
+  const finishTest = useCallback(async () => {
     setIsTestActive(false);
     
     // Calculate results
@@ -155,7 +164,7 @@ export const MCQTest: React.FC = () => {
     } catch (error) {
       console.error('Error saving test session:', error);
     }
-  };
+  }, [questions, selectedAnswers, timeRemaining]);
 
   const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60);

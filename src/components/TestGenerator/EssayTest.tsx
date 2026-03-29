@@ -48,7 +48,7 @@ export const EssayTest: React.FC = () => {
     return () => {
       if (interval) clearInterval(interval);
     };
-  }, [isTestActive, isPaused, timeRemaining]);
+  }, [isTestActive, isPaused, timeRemaining, finishTest]);
 
   useEffect(() => {
     const words = essayContent.trim().split(/\s+/).filter(word => word.length > 0);
@@ -97,7 +97,7 @@ export const EssayTest: React.FC = () => {
     setWordCount(0);
   };
 
-  const finishTest = async () => {
+  const finishTest = useCallback(async () => {
     setIsTestActive(false);
     setShowSubmission(true);
 
@@ -116,7 +116,7 @@ export const EssayTest: React.FC = () => {
     } catch (error) {
       console.error('Error saving test session:', error);
     }
-  };
+  }, [essayContent, selectedTopic, timeRemaining, wordCount]);
 
   const formatTime = (seconds: number) => {
     const hours = Math.floor(seconds / 3600);

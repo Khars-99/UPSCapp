@@ -3,11 +3,8 @@ import {
   Box,
   Typography,
   Card,
-  CardContent,
   Tabs,
   Tab,
-  Button,
-  Grid,
 } from '@mui/material';
 import { Quiz, Edit } from '@mui/icons-material';
 import { MCQTest } from './MCQTest';

@@ -10,12 +10,10 @@ import {
   ListItem,
   ListItemText,
   ListItemIcon,
-  IconButton,
 } from '@mui/material';
 import {
   MenuBook,
   Quiz,
-  Newspaper,
   Assessment,
   TrendingUp,
   Schedule,
